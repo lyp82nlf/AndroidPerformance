@@ -94,8 +94,8 @@ dependencies {
 
     // https://github.com/iReaderAndroid/X2C
     // Increase layout loading speed 200%
-    annotationProcessor 'com.zhangyue.we:x2c-apt:1.1.2'
-    implementation 'com.zhangyue.we:x2c-lib:1.0.6'
+//    annotationProcessor 'com.zhangyue.we:x2c-apt:1.1.2'
+//    implementation 'com.zhangyue.we:x2c-lib:1.0.6'
 
     // 微信基于mmap的高性能通用 key-value 组件
     implementation 'com.tencent:mmkv:1.0.17'
