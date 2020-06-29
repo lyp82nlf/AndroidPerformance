@@ -81,7 +81,7 @@ public class PerformanceApp extends Application {
                 .start();
 
         dispatcher.await();
-
+        Log.d("main1", "aaa");
         LaunchTimer.endRecord("app start");
     }
 
