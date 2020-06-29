@@ -1,11 +1,11 @@
-##深入启动优化
-####前言 
-	
+## 深入启动优化
+
+#### 前言
 	启动过程是面向用户的第一体验 如果启动过慢或者崩溃 那么卸载概率就会大大增加 
 	有一个八秒定律是说 如果应用在8秒内没有启动完成 那么大概率会被卸载
 	所以启动优化还是非常有必要的步骤
 	
-####老规矩(Show me the code)
+#### 老规矩(Show me the code)
 [Talk is cheap](https://github.com/lyp82nlf/AndroidPerformance)
 	
 我们做启动优化的过程主要要思考三个问题:
@@ -17,7 +17,7 @@
 ### 如何测量启动时间?
 测量启动时间有很多种 最简单的一种就是通过打日志实现
 
-####1.日志类实现
+#### 1.日志类实现
 ```
 public class LaunchTimer {
     private static long startTime;
@@ -45,7 +45,7 @@ public class LaunchTimer {
 - 代码侵入太强 不够优雅
 - 可维护性变差
 
-####2.AOP方式实现
+#### 2.AOP方式实现
 我们可以通过AOP方式实现无侵入式的日志打印 
 
 ```
@@ -114,9 +114,9 @@ cputime和walltime区别
 ### 如何启动优化?
 主要思路是异步优化和延迟优化 主要优化方向是CPU Time
 
-####异步优化
+#### 异步优化
 
-#####1.线程池
+##### 1.线程池
 ```
 ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>());
 threadPoolExecutor.execute(initAMap());
@@ -137,7 +137,7 @@ try {
 2. 如果各任务之间有依赖性 比如B依赖A 那么没办法实现
 3. 如果A需要在App onCreate生命周期内完成 需要使用countDownLatch来实现 不够优雅 每次改变需要计算 可维护性比较差
 
-#####2.启动器
+##### 2.启动器
 为什么我们要设计启动器?
 
 主要就是因为上面几点原因 不可维护 依赖性没法解决
@@ -217,7 +217,7 @@ try {
 
 ```
 
-#####启动器UML图
+##### 启动器UML图
 ![WechatIMG9.png](https://upload-images.jianshu.io/upload_images/11006838-00fa64c2d40f9a28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ```
@@ -237,7 +237,7 @@ try {
 ```
 具体启动器代码请看源码 没啥逻辑
 
-####延迟加载
+#### 延迟加载
 我们常规的延迟加载 可能使用Handle+postDelay实现 
 
 缺点:
@@ -245,7 +245,7 @@ try {
 1. 代码不够优雅 可维护性变差
 2. 可能会阻塞主线程 时机不方便控制
 
-#####优化方案
+##### 优化方案
 使用`IdleHandler`的特性 在空闲时执行延迟任务
 
 ```
@@ -277,7 +277,7 @@ public class DelayTaskDispatcher {
 ```
 
 
-###线上如何检测启动时间?
+### 线上如何检测启动时间?
 - 可以自建APM
 - 使用听云等第三方平台
 - Android Vitals
@@ -292,7 +292,7 @@ public class DelayTaskDispatcher {
 - 资源文件重排
 - 厂商通道(HardCoder,Hyper Boost等等)
 
-###其他黑科技
+### 其他黑科技
 
 1. 我们可以在启动页先换成一个有背景图的theme,然后启动完成之后oncreate 换成真正的theme
 虽然对启动速度没有提高 但是用户体验提高很多,但是如果在低机型机器上 反而会使更加卡顿 所以建议在Android7.0机器以上开启 优化跟手体验
