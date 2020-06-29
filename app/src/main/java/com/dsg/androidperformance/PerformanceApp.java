@@ -2,7 +2,10 @@ package com.dsg.androidperformance;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Debug;
 import android.util.Log;
+
+import androidx.core.os.TraceCompat;
 
 import com.dsg.androidperformance.launcherStarter.TaskDispatcher;
 import com.dsg.androidperformance.tasks.GetDeviceIdTask;
@@ -51,6 +54,10 @@ public class PerformanceApp extends Application {
     public void onCreate() {
         super.onCreate();
         LaunchTimer.startRecord();
+//        使用traceView
+//        Debug.startMethodTracing("App");
+        //systrace 查找AppOnCreate 分析
+        TraceCompat.beginSection("AppOnCreate");
 /*//        这边有几个问题 1.代码不优雅 2.可维护性比较差 3.如果initJPush 依赖Umeng先执行完成  就没办法做到 4.如果需要在生命周期结束之前 initJPush需要执行完成才能执完成 需要一些特殊方法 也不够优雅
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS, new LinkedBlockingDeque<Runnable>());
         threadPoolExecutor.execute(initAMap());
@@ -81,7 +88,8 @@ public class PerformanceApp extends Application {
                 .start();
 
         dispatcher.await();
-        Log.d("main1", "aaa");
+//        Debug.stopMethodTracing();
+        TraceCompat.endSection();
         LaunchTimer.endRecord("app start");
     }
 
