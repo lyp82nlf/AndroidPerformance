@@ -1,5 +1,6 @@
 package com.dsg.androidperformance.adapter;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dsg.androidperformance.R;
 import com.dsg.androidperformance.bean.NewsItem;
+import com.dsg.androidperformance.memory.MemoryLeakActivity;
+import com.dsg.androidperformance.memory.MemorySharkActivity;
 import com.dsg.androidperformance.utils.LaunchTimer;
 import com.dsg.androidperformance.utils.LogUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -82,6 +85,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(holder.imageView.getContext(), MemoryLeakActivity.class);
+                holder.imageView.getContext().startActivity(intent);
             }
         });
     }

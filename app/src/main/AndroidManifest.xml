@@ -48,6 +48,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".memory.MemorySharkActivity" />
+        <activity android:name=".memory.MemoryLeakActivity" />
+
 
         <service android:name="com.amap.api.location.APSService"></service>
 
