@@ -2,12 +2,15 @@ package com.dsg.androidperformance;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Debug;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.core.os.TraceCompat;
 
 import com.dsg.androidperformance.launcherStarter.TaskDispatcher;
+import com.dsg.androidperformance.memory.ImageHook;
 import com.dsg.androidperformance.tasks.GetDeviceIdTask;
 import com.dsg.androidperformance.tasks.InitAMapTask;
 import com.dsg.androidperformance.tasks.InitBuglyTask;
@@ -17,6 +20,8 @@ import com.dsg.androidperformance.tasks.InitStethoTask;
 import com.dsg.androidperformance.tasks.InitUmengTask;
 import com.dsg.androidperformance.tasks.InitWeexTask;
 import com.dsg.androidperformance.utils.LaunchTimer;
+import com.taobao.android.dexposed.DexposedBridge;
+import com.taobao.android.dexposed.XC_MethodHook;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -91,6 +96,14 @@ public class PerformanceApp extends Application {
 //        Debug.stopMethodTracing();
         TraceCompat.endSection();
         LaunchTimer.endRecord("app start");
+
+        DexposedBridge.hookAllConstructors(ImageView.class, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+                DexposedBridge.findAndHookMethod(ImageView.class, "setImageBitmap", Bitmap.class, new ImageHook());
+            }
+        });
     }
 
 

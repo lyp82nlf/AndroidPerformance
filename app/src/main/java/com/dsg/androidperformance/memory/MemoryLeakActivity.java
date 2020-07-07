@@ -32,7 +32,7 @@ public class MemoryLeakActivity extends AppCompatActivity implements CallBack {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        CallBackManager.removeCallBack(this);
+        CallBackManager.removeCallBack(this);
     }
 
     @Override
